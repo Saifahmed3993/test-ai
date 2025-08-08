@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Roadmap - Career Guidance</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 600;
+            color: white !important;
+        }
+        
+        .nav-link {
+            color: rgba(255,255,255,0.9) !important;
+            font-weight: 500;
+        }
+        
+        .nav-link:hover {
+            color: white !important;
+        }
+        
+        .main-content {
+            padding: 30px 0;
+        }
+        
+        .roadmap-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid #e5e7eb;
+        }
+        
+        .roadmap-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .roadmap-header h1 {
+            color: #1f2937;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .roadmap-header p {
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+        
+        .career-path-selector {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+            border: 2px solid #e5e7eb;
+        }
+        
+        .path-option {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .path-option:hover {
+            border-color: #8B5CF6;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.1);
+        }
+        
+        .path-option.selected {
+            border-color: #8B5CF6;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);
+        }
+        
+        .path-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+            margin-bottom: 15px;
+        }
+        
+        .path-icon.web-dev {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+        }
+        
+        .path-icon.data-science {
+            background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+        }
+        
+        .path-icon.design {
+            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+        }
+        
+        .path-icon.marketing {
+            background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+        }
+        
+        .path-title {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 5px;
+        }
+        
+        .path-description {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 0;
+        }
+        
+        .roadmap-timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .roadmap-timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #8B5CF6, #3B82F6);
+        }
+        
+        .timeline-item {
+            position: relative;
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -37px;
+            top: 30px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #8B5CF6;
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px #8B5CF6;
+        }
+        
+        .timeline-item.completed::before {
+            background: #10B981;
+            box-shadow: 0 0 0 3px #10B981;
+        }
+        
+        .timeline-item.current::before {
+            background: #F59E0B;
+            box-shadow: 0 0 0 3px #F59E0B;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 3px #F59E0B; }
+            50% { box-shadow: 0 0 0 6px rgba(245, 158, 11, 0.3); }
+            100% { box-shadow: 0 0 0 3px #F59E0B; }
+        }
+        
+        .timeline-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .timeline-title {
+            font-weight: 600;
+            color: #1f2937;
+            margin: 0;
+        }
+        
+        .timeline-duration {
+            background: #f3f4f6;
+            color: #6b7280;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .timeline-description {
+            color: #6b7280;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .skill-tag {
+            background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .resources-list {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 15px;
+        }
+        
+        .resource-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .resource-item:last-child {
+            border-bottom: none;
+        }
+        
+        .resource-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 14px;
+            color: white;
+        }
+        
+        .resource-icon.course {
+            background: #10B981;
+        }
+        
+        .resource-icon.book {
+            background: #8B5CF6;
+        }
+        
+        .resource-icon.video {
+            background: #EF4444;
+        }
+        
+        .resource-icon.project {
+            background: #F59E0B;
+        }
+        
+        .resource-text {
+            flex: 1;
+        }
+        
+        .resource-title {
+            font-weight: 500;
+            color: #1f2937;
+            margin: 0;
+            font-size: 14px;
+        }
+        
+        .resource-description {
+            color: #6b7280;
+            margin: 0;
+            font-size: 12px;
+        }
+        
+        .progress-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .progress-bar {
+            flex: 1;
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #8B5CF6, #3B82F6);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-text {
+            font-size: 12px;
+            color: #6b7280;
+            font-weight: 500;
+            min-width: 40px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .btn-action {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-start {
+            background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
+            color: white;
+            border: none;
+        }
+        
+        .btn-start:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(139, 92, 246, 0.3);
+            color: white;
+        }
+        
+        .btn-resource {
+            background: white;
+            color: #8B5CF6;
+            border: 1px solid #8B5CF6;
+        }
+        
+        .btn-resource:hover {
+            background: #8B5CF6;
+            color: white;
+        }
+        
+        .overall-progress {
+            background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .progress-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: conic-gradient(#ffffff 0deg, #ffffff 0deg, transparent 0deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            position: relative;
+        }
+        
+        .progress-circle::before {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
+        }
+        
+        .progress-percentage {
+            position: relative;
+            z-index: 1;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="dashboard.html">
+                <i class="fas fa-brain me-2"></i>
+                Career Guidance
+            </a>
+            
+            <div class="navbar-nav ms-auto">
+                <a href="dashboard.html" class="nav-link">
+                    <i class="fas fa-home me-1"></i>
+                    Dashboard
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container main-content">
+        <div class="roadmap-container">
+            <div class="roadmap-header">
+                <h1>Learning Roadmap</h1>
+                <p>Choose your career path and follow a structured learning journey</p>
+            </div>
+
+            <!-- Career Path Selector -->
+            <div class="career-path-selector">
+                <h4 class="mb-3">Select Your Career Path</h4>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="path-option" onclick="selectPath('web-dev')">
+                            <div class="path-icon web-dev">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <div class="path-title">Web Development</div>
+                            <div class="path-description">Build websites and web applications</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="path-option" onclick="selectPath('data-science')">
+                            <div class="path-icon data-science">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="path-title">Data Science</div>
+                            <div class="path-description">Analyze data and extract insights</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="path-option" onclick="selectPath('design')">
+                            <div class="path-icon design">
+                                <i class="fas fa-palette"></i>
+                            </div>
+                            <div class="path-title">UI/UX Design</div>
+                            <div class="path-description">Create beautiful user experiences</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="path-option" onclick="selectPath('marketing')">
+                            <div class="path-icon marketing">
+                                <i class="fas fa-bullhorn"></i>
+                            </div>
+                            <div class="path-title">Digital Marketing</div>
+                            <div class="path-description">Promote products and services online</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Overall Progress -->
+            <div class="overall-progress" id="overallProgress" style="display: none;">
+                <div class="progress-circle" id="progressCircle">
+                    <div class="progress-percentage" id="progressPercentage">0%</div>
+                </div>
+                <h4>Overall Progress</h4>
+                <p>You're making great progress on your learning journey!</p>
+            </div>
+
+            <!-- Roadmap Timeline -->
+            <div class="roadmap-timeline" id="roadmapTimeline" style="display: none;">
+                <!-- Timeline items will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Career paths data
+        const careerPaths = {
+            'web-dev': {
+                title: 'Web Development',
+                description: 'Learn to build modern websites and web applications',
+                timeline: [
+                    {
+                        title: 'HTML & CSS Fundamentals',
+                        duration: '2-3 weeks',
+                        description: 'Learn the basics of web markup and styling',
+                        skills: ['HTML5', 'CSS3', 'Responsive Design'],
+                        resources: [
+                            { type: 'course', title: 'HTML & CSS Basics', description: 'FreeCodeCamp Course' },
+                            { type: 'book', title: 'HTML & CSS: Design and Build Websites', description: 'Jon Duckett' },
+                            { type: 'project', title: 'Personal Portfolio Website', description: 'Build your first website' }
+                        ],
+                        progress: 0
+                    },
+                    {
+                        title: 'JavaScript Programming',
+                        duration: '4-6 weeks',
+                        description: 'Master JavaScript fundamentals and ES6+ features',
+                        skills: ['JavaScript', 'ES6+', 'DOM Manipulation'],
+                        resources: [
+                            { type: 'course', title: 'JavaScript Fundamentals', description: 'MDN Web Docs' },
+                            { type: 'video', title: 'JavaScript Tutorial', description: 'YouTube Series' },
+                            { type: 'project', title: 'Interactive Web App', description: 'Create a dynamic application' }
+                        ],
+                        progress: 0
+                    },
+                    {
+                        title: 'Frontend Framework (React)',
+                        duration: '6-8 weeks',
+                        description: 'Learn React.js for building modern user interfaces',
+                        skills: ['React', 'JSX', 'Hooks', 'State Management'],
+                        resources: [
+                            { type: 'course', title: 'React Complete Guide', description: 'Udemy Course' },
+                            { type: 'book', title: 'Learning React', description: 'Alex Banks' },
+                            { type: 'project', title: 'React Portfolio', description: 'Build a React portfolio' }
+                        ],
+                        progress: 0
+                    },
+                    {
+                        title: 'Backend Development',
+                        duration: '8-10 weeks',
+                        description: 'Learn server-side programming and databases',
+                        skills: ['Node.js', 'Express', 'MongoDB', 'REST APIs'],
+                        resources: [
+                            { type: 'course', title: 'Node.js & Express', description: 'Online Course' },
+                            { type: 'book', title: 'Node.js Design Patterns', description: 'Mario Casciaro' },
+                            { type: 'project', title: 'Full-Stack App', description: 'Build a complete application' }
+                        ],
+                        progress: 0
+                    },
+                    {
+                        title: 'Advanced Topics',
+                        duration: '4-6 weeks',
+                        description: 'Explore advanced web development concepts',
+                        skills: ['TypeScript', 'Testing', 'Deployment', 'Performance'],
+                        resources: [
+                            { type: 'course', title: 'Advanced Web Development', description: 'Specialized Course' },
+                            { type: 'video', title: 'Web Performance', description: 'Performance Optimization' },
+                            { type: 'project', title: 'Production App', description: 'Deploy a real application' }
+                        ],
+                        progress: 0
+                    }
+                ]
+            },
+            'data-science': {
+                title: 'Data Science',
+                description: 'Learn to analyze data and extract valuable insights',
+                timeline: [
+                    {
+                        title: 'Python Programming',
+                        duration: '4-6 weeks',
+                        description: 'Master Python fundamentals for data science',
+                        skills: ['Python', 'Pandas', 'NumPy'],
+                        resources: [
+                            { type: 'course', title: 'Python for Data Science', description: 'Coursera Course' },
+                            { type: 'book', title: 'Python Data Science Handbook', description: 'Jake VanderPlas' },
+                            { type: 'project', title: 'Data Analysis Project', description: 'Analyze a dataset' }
+                        ],
+                        progress: 0
+                    },
+                    {
+                        title: 'Statistics & Mathematics',
+                        duration: '6-8 weeks',
+                        description: 'Learn statistical concepts and mathematical foundations',
+                        skills: ['Statistics', 'Probability', 'Linear Algebra'],
+                        resources: [
+                            { type: 'course', title: 'Statistics for Data Science', description: 'Online Course' },
+                            { type: 'book', title: 'Introduction to Statistical Learning', description: 'Academic Book' },
+                            { type: 'project', title: 'Statistical Analysis', description: 'Conduct statistical tests' }
+                        ],
+                        progress: 0
+                    },
+                    {
+                        title: 'Machine Learning',
+                        duration: '8-10 weeks',
+                        description: 'Learn machine learning algorithms and techniques',
+                        skills: ['Scikit-learn', 'Supervised Learning', 'Unsupervised Learning'],
+                        resources: [
+                            { type: 'course', title: 'Machine Learning Course', description: 'Andrew Ng' },
+                            { type: 'book', title: 'Hands-On Machine Learning', description: 'Aurélien Géron' },
+                            { type: 'project', title: 'ML Model', description: 'Build a prediction model' }
+                        ],
+                        progress: 0
+                    },
+                    {
+                        title: 'Data Visualization',
+                        duration: '4-6 weeks',
+                        description: 'Learn to create compelling data visualizations',
+                        skills: ['Matplotlib', 'Seaborn', 'Plotly', 'Tableau'],
+                        resources: [
+                            { type: 'course', title: 'Data Visualization', description: 'Specialized Course' },
+                            { type: 'book', title: 'Storytelling with Data', description: 'Cole Nussbaumer' },
+                            { type: 'project', title: 'Dashboard Creation', description: 'Build interactive dashboards' }
+                        ],
+                        progress: 0
+                    }
+                ]
+            },
+            'design': {
+                title: 'UI/UX Design',
+                description: 'Create beautiful and functional user experiences',
+                timeline: [
+                    {
+                        title: 'Design Fundamentals',
+                        duration: '4-6 weeks',
+                        description: 'Learn design principles and visual hierarchy',
+                        skills: ['Color Theory', 'Typography', 'Layout Design'],
+                        resources: [
+                            { type: 'course', title: 'Design Fundamentals', description: 'Design Course' },
+                            { type: 'book', title: 'The Design of Everyday Things', description: 'Don Norman' },
+                            { type: 'project', title: 'Design System', description: 'Create a design system' }
+                        ],
+                        progress: 0
+                    },
+                    {
+                        title: 'User Research',
+                        duration: '3-4 weeks',
+                        description: 'Learn user research methods and techniques',
+                        skills: ['User Interviews', 'Surveys', 'Personas', 'User Journey'],
+                        resources: [
+                            { type: 'course', title: 'User Research Methods', description: 'UX Course' },
+                            { type: 'book', title: 'Don\'t Make Me Think', description: 'Steve Krug' },
+                            { type: 'project', title: 'User Research Study', description: 'Conduct user research' }
+                        ],
+                        progress: 0
+                    },
+                    {
+                        title: 'Wireframing & Prototyping',
+                        duration: '6-8 weeks',
+                        description: 'Create wireframes and interactive prototypes',
+                        skills: ['Figma', 'Sketch', 'Adobe XD', 'Prototyping'],
+                        resources: [
+                            { type: 'course', title: 'Figma Masterclass', description: 'Design Tool Course' },
+                            { type: 'video', title: 'Prototyping Tutorials', description: 'YouTube Series' },
+                            { type: 'project', title: 'App Prototype', description: 'Design a mobile app' }
+                        ],
+                        progress: 0
+                    },
+                    {
+                        title: 'Visual Design',
+                        duration: '6-8 weeks',
+                        description: 'Master visual design and branding',
+                        skills: ['Visual Design', 'Branding', 'Icon Design', 'Illustration'],
+                        resources: [
+                            { type: 'course', title: 'Visual Design Principles', description: 'Design Course' },
+                            { type: 'book', title: 'Logo Design Love', description: 'David Airey' },
+                            { type: 'project', title: 'Brand Identity', description: 'Create a complete brand' }
+                        ],
+                        progress: 0
+                    }
+                ]
+            },
+            'marketing': {
+                title: 'Digital Marketing',
+                description: 'Learn to promote products and services online',
+                timeline: [
+                    {
+                        title: 'Marketing Fundamentals',
+                        duration: '3-4 weeks',
+                        description: 'Learn basic marketing concepts and strategies',
+                        skills: ['Marketing Mix', 'Target Audience', 'Value Proposition'],
+                        resources: [
+                            { type: 'course', title: 'Marketing Fundamentals', description: 'Business Course' },
+                            { type: 'book', title: 'Marketing Management', description: 'Philip Kotler' },
+                            { type: 'project', title: 'Marketing Plan', description: 'Create a marketing strategy' }
+                        ],
+                        progress: 0
+                    },
+                    {
+                        title: 'Content Marketing',
+                        duration: '4-6 weeks',
+                        description: 'Learn to create engaging content that attracts customers',
+                        skills: ['Content Strategy', 'SEO', 'Blog Writing', 'Social Media'],
+                        resources: [
+                            { type: 'course', title: 'Content Marketing', description: 'Marketing Course' },
+                            { type: 'book', title: 'Content Marketing Strategy', description: 'Marketing Book' },
+                            { type: 'project', title: 'Content Calendar', description: 'Plan content strategy' }
+                        ],
+                        progress: 0
+                    },
+                    {
+                        title: 'Social Media Marketing',
+                        duration: '4-6 weeks',
+                        description: 'Master social media platforms and advertising',
+                        skills: ['Facebook Ads', 'Instagram Marketing', 'LinkedIn', 'Analytics'],
+                        resources: [
+                            { type: 'course', title: 'Social Media Marketing', description: 'Platform Course' },
+                            { type: 'video', title: 'Social Media Tutorials', description: 'YouTube Series' },
+                            { type: 'project', title: 'Social Media Campaign', description: 'Run a campaign' }
+                        ],
+                        progress: 0
+                    },
+                    {
+                        title: 'Email Marketing',
+                        duration: '3-4 weeks',
+                        description: 'Learn email marketing strategies and automation',
+                        skills: ['Email Campaigns', 'Automation', 'A/B Testing', 'Analytics'],
+                        resources: [
+                            { type: 'course', title: 'Email Marketing', description: 'Email Course' },
+                            { type: 'book', title: 'Email Marketing Rules', description: 'Chad White' },
+                            { type: 'project', title: 'Email Sequence', description: 'Create email campaigns' }
+                        ],
+                        progress: 0
+                    }
+                ]
+            }
+        };
+
+        let selectedPath = null;
+        let userProgress = {};
+
+        // Select career path
+        function selectPath(pathKey) {
+            // Remove previous selection
+            document.querySelectorAll('.path-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Select new path
+            event.currentTarget.classList.add('selected');
+            selectedPath = pathKey;
+            
+            // Load roadmap
+            loadRoadmap();
+            
+            // Show progress and timeline
+            document.getElementById('overallProgress').style.display = 'block';
+            document.getElementById('roadmapTimeline').style.display = 'block';
+        }
+
+        // Load roadmap
+        function loadRoadmap() {
+            const path = careerPaths[selectedPath];
+            const timeline = document.getElementById('roadmapTimeline');
+            
+            // Load user progress
+            loadUserProgress();
+            
+            timeline.innerHTML = path.timeline.map((item, index) => {
+                const progress = userProgress[selectedPath]?.[index] || 0;
+                const status = progress === 100 ? 'completed' : progress > 0 ? 'current' : '';
+                
+                return `
+                    <div class="timeline-item ${status}">
+                        <div class="timeline-header">
+                            <h5 class="timeline-title">${item.title}</h5>
+                            <span class="timeline-duration">${item.duration}</span>
+                        </div>
+                        <p class="timeline-description">${item.description}</p>
+                        
+                        <div class="skills-list">
+                            ${item.skills.map(skill => `<span class="skill-tag">${skill}</span>`).join('')}
+                        </div>
+                        
+                        <div class="resources-list">
+                            <h6 class="mb-2">Learning Resources:</h6>
+                            ${item.resources.map(resource => `
+                                <div class="resource-item">
+                                    <div class="resource-icon ${resource.type}">
+                                        <i class="fas fa-${getResourceIcon(resource.type)}"></i>
+                                    </div>
+                                    <div class="resource-text">
+                                        <div class="resource-title">${resource.title}</div>
+                                        <div class="resource-description">${resource.description}</div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <div class="progress-indicator">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${progress}%"></div>
+                            </div>
+                            <span class="progress-text">${progress}%</span>
+                        </div>
+                        
+                        <div class="action-buttons">
+                            <button class="btn-action btn-start" onclick="startModule(${index})">
+                                ${progress === 0 ? 'Start Module' : progress === 100 ? 'Completed' : 'Continue'}
+                            </button>
+                            <button class="btn-action btn-resource" onclick="viewResources(${index})">
+                                View Resources
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            updateOverallProgress();
+        }
+
+        // Get resource icon
+        function getResourceIcon(type) {
+            const icons = {
+                'course': 'graduation-cap',
+                'book': 'book',
+                'video': 'play',
+                'project': 'code'
+            };
+            return icons[type] || 'link';
+        }
+
+        // Load user progress
+        function loadUserProgress() {
+            const savedProgress = localStorage.getItem('userProgress');
+            if (savedProgress) {
+                userProgress = JSON.parse(savedProgress);
+            }
+        }
+
+        // Start module
+        function startModule(moduleIndex) {
+            if (!userProgress[selectedPath]) {
+                userProgress[selectedPath] = [];
+            }
+            
+            if (userProgress[selectedPath][moduleIndex] === undefined) {
+                userProgress[selectedPath][moduleIndex] = 0;
+            }
+            
+            // Simulate progress
+            const currentProgress = userProgress[selectedPath][moduleIndex];
+            if (currentProgress < 100) {
+                userProgress[selectedPath][moduleIndex] = Math.min(currentProgress + 25, 100);
+                localStorage.setItem('userProgress', JSON.stringify(userProgress));
+                
+                // Reload roadmap to show updated progress
+                loadRoadmap();
+                
+                // Update dashboard progress
+                updateDashboardProgress();
+            }
+        }
+
+        // View resources
+        function viewResources(moduleIndex) {
+            const path = careerPaths[selectedPath];
+            const module = path.timeline[moduleIndex];
+            
+            alert(`Resources for ${module.title}:\n\n${module.resources.map(r => `• ${r.title}: ${r.description}`).join('\n')}`);
+        }
+
+        // Update overall progress
+        function updateOverallProgress() {
+            if (!userProgress[selectedPath]) return;
+            
+            const totalModules = careerPaths[selectedPath].timeline.length;
+            const completedModules = userProgress[selectedPath].filter(p => p === 100).length;
+            const overallProgress = Math.round((completedModules / totalModules) * 100);
+            
+            document.getElementById('progressPercentage').textContent = overallProgress + '%';
+            
+            // Update progress circle
+            const circle = document.getElementById('progressCircle');
+            const degrees = (overallProgress / 100) * 360;
+            circle.style.background = `conic-gradient(#ffffff ${degrees}deg, transparent ${degrees}deg)`;
+        }
+
+        // Update dashboard progress
+        function updateDashboardProgress() {
+            const savedProgress = JSON.parse(localStorage.getItem('userProgress') || '{}');
+            
+            // Calculate overall roadmap progress
+            let totalProgress = 0;
+            let pathCount = 0;
+            
+            Object.keys(savedProgress).forEach(path => {
+                if (careerPaths[path]) {
+                    const pathProgress = savedProgress[path];
+                    const pathTotal = careerPaths[path].timeline.length;
+                    const completed = pathProgress.filter(p => p === 100).length;
+                    totalProgress += (completed / pathTotal) * 100;
+                    pathCount++;
+                }
+            });
+            
+            const averageProgress = pathCount > 0 ? Math.round(totalProgress / pathCount) : 0;
+            
+            // Update dashboard data
+            savedProgress.roadmapProgress = averageProgress;
+            localStorage.setItem('userProgress', JSON.stringify(savedProgress));
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load any existing progress
+            loadUserProgress();
+        });
+    </script>
+</body>
+</html>

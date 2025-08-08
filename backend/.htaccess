@@ -1,0 +1,45 @@
+RewriteEngine On
+
+# Handle CORS
+Header always set Access-Control-Allow-Origin "*"
+Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+Header always set Access-Control-Allow-Headers "Content-Type, Authorization"
+
+# Handle preflight requests
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule ^(.*)$ $1 [R=200,L]
+
+# API routing
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^api/(.*)$ api/index.php [QSA,L]
+
+# Security headers
+Header always set X-Content-Type-Options nosniff
+Header always set X-Frame-Options DENY
+Header always set X-XSS-Protection "1; mode=block"
+
+# Cache control for static assets
+<FilesMatch "\.(css|js|png|jpg|jpeg|gif|ico|svg)$">
+    Header set Cache-Control "max-age=31536000, public"
+</FilesMatch>
+
+# Prevent access to sensitive files
+<Files "*.env">
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files "composer.json">
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files "composer.lock">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Error pages
+ErrorDocument 404 /api/error/404
+ErrorDocument 500 /api/error/500

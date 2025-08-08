@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Career Guidance</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .auth-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            width: 100%;
+            max-width: 400px;
+            margin: 20px;
+        }
+        
+        .auth-header {
+            background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .auth-header h2 {
+            margin: 0;
+            font-weight: 600;
+            font-size: 24px;
+        }
+        
+        .auth-header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+            font-size: 14px;
+        }
+        
+        .auth-form {
+            padding: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #374151;
+            font-size: 14px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #8B5CF6;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+        
+        .password-input {
+            position: relative;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #6b7280;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .btn-primary {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(139, 92, 246, 0.3);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .social-login {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .social-login p {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .social-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .btn-social {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid #e5e7eb;
+            background: white;
+            color: #6b7280;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-social:hover {
+            border-color: #8B5CF6;
+            color: #8B5CF6;
+            transform: translateY(-2px);
+        }
+        
+        .auth-footer {
+            text-align: center;
+            padding: 20px 30px;
+            border-top: 1px solid #e5e7eb;
+            background: #f9fafb;
+        }
+        
+        .auth-footer a {
+            color: #8B5CF6;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+        
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-header">
+            <h2>Create Account</h2>
+            <p>Join our career guidance platform</p>
+        </div>
+        
+        <div class="auth-form">
+            <div id="alert-container"></div>
+            
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="password-input">
+                        <input type="password" id="password" name="password" class="form-control" required>
+                        <button type="button" class="password-toggle" onclick="togglePassword('password')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <div class="password-input">
+                        <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" required>
+                        <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-primary" id="registerBtn">
+                    <span id="registerBtnText">Create Account</span>
+                    <span id="registerBtnLoading" class="loading" style="display: none;"></span>
+                </button>
+            </form>
+            
+            <div class="social-login">
+                <p>Or register with</p>
+                <div class="social-buttons">
+                    <button class="btn-social" onclick="socialLogin('google')">
+                        <i class="fab fa-google"></i>
+                    </button>
+                    <button class="btn-social" onclick="socialLogin('facebook')">
+                        <i class="fab fa-facebook-f"></i>
+                    </button>
+                    <button class="btn-social" onclick="socialLogin('github')">
+                        <i class="fab fa-github"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="auth-footer">
+            Already have an account? <a href="login.html">Sign In</a>
+        </div>
+    </div>
+
+    <script>
+        // Check if user is already logged in
+        function checkIfLoggedIn() {
+            const user = localStorage.getItem('user');
+            if (user) {
+                try {
+                    const userData = JSON.parse(user);
+                    if (userData.id && userData.username && userData.email) {
+                        window.location.href = 'dashboard.html';
+                        return;
+                    }
+                } catch (e) {
+                    // Clear invalid data
+                    localStorage.removeItem('user');
+                    localStorage.removeItem('token');
+                }
+            }
+        }
+        
+        // Call on page load
+        document.addEventListener('DOMContentLoaded', checkIfLoggedIn);
+        
+        function showAlert(message, type) {
+            const alertContainer = document.getElementById('alert-container');
+            alertContainer.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+            
+            setTimeout(() => {
+                alertContainer.innerHTML = '';
+            }, 5000);
+        }
+        
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const button = input.nextElementSibling;
+            const icon = button.querySelector('i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+        
+        function socialLogin(provider) {
+            showAlert(`${provider} login is not implemented yet`, 'error');
+        }
+        
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            // Validation
+            if (username.length < 3) {
+                showAlert('Username must be at least 3 characters', 'error');
+                return;
+            }
+            
+            if (!email.includes('@')) {
+                showAlert('Please enter a valid email address', 'error');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showAlert('Password must be at least 6 characters', 'error');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showAlert('Passwords do not match', 'error');
+                return;
+            }
+            
+            // Show loading
+            const btn = document.getElementById('registerBtn');
+            const btnText = document.getElementById('registerBtnText');
+            const btnLoading = document.getElementById('registerBtnLoading');
+            
+            btn.disabled = true;
+            btnText.style.display = 'none';
+            btnLoading.style.display = 'inline-block';
+            
+            try {
+                const response = await fetch('../../backend/api/register.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        email: email,
+                        password: password
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    showAlert(data.message, 'success');
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 2000);
+                } else {
+                    showAlert(data.message, 'error');
+                }
+            } catch (error) {
+                showAlert('Network error. Please try again.', 'error');
+            } finally {
+                btn.disabled = false;
+                btnText.style.display = 'inline';
+                btnLoading.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

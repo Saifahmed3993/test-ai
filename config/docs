@@ -1,0 +1,209 @@
+# Career Guidance Platform
+
+A comprehensive career guidance web application built with modern web technologies and a robust PHP backend.
+
+## Overview
+
+This full-stack web application provides AI-powered career guidance, helping users discover their ideal career paths through interactive quizzes, personalized roadmaps, and intelligent chat assistance.
+
+## Features Working
+
+- ✅ **Interactive Career Quiz**: Comprehensive assessment to determine suitable career paths
+- ✅ **Personalized Learning Roadmaps**: Step-by-step guides for skill development  
+- ✅ **Job Opportunities**: Curated job listings based on user profiles
+- ✅ **AI Chat Assistant**: Intelligent career counseling and guidance
+- ✅ **User Authentication**: Complete login, registration, and password reset system
+- ✅ **Responsive Design**: Mobile-first approach with Bootstrap framework
+- ✅ **Database Integration**: Full PHP + MySQL backend with secure API endpoints
+- ✅ **Modern JavaScript**: ES6+ features with Fetch API for seamless communication
+
+## Technologies Used
+
+### Frontend
+- **HTML5** - Semantic markup structure
+- **CSS3** - Modern styling with custom properties
+- **Bootstrap 5** - Responsive framework
+- **SASS** - CSS preprocessor for maintainable styles
+- **JavaScript** - Modern ES6+ features
+- **Font Awesome** - Icon library
+
+### Backend  
+- **PHP 7.4+** - Server-side scripting
+- **MySQL 5.7+** - Database management
+- **PDO** - Database abstraction layer
+- **RESTful API** - Clean API architecture
+
+### Development Tools
+- **XAMPP** - Local development environment
+- **Composer** - PHP dependency management  
+- **npm** - Package management
+- **Git** - Version control
+
+## Quick Start on XAMPP
+
+1. **Download & Extract**
+   ```bash
+   # Place this project in your XAMPP htdocs folder
+   C:\xampp\htdocs\project\
+   ```
+
+2. **Database Setup**
+   ```bash
+   # Open http://localhost/project/setup.php
+   # This will automatically create the database and tables
+   ```
+
+3. **Start Services**
+   - Start Apache and MySQL in XAMPP Control Panel
+   - Navigate to `http://localhost/project`
+
+4. **Test Features**
+   - Registration: `http://localhost/project/register.html`
+   - Login: `http://localhost/project/login.html` 
+   - Dashboard: `http://localhost/project/dashboard.html`
+
+## Project Structure
+
+```
+project/
+├── assets/
+│   ├── css/
+│   │   └── style.css           # Compiled styles
+│   ├── js/
+│   │   └── main.js             # Application logic
+│   └── images/
+│       └── hero-illustration.svg
+├── backend/
+│   ├── api/
+│   │   ├── index.php           # API router
+│   │   ├── config.php          # Database config
+│   │   ├── login.php           # Login endpoint
+│   │   ├── register.php        # Registration endpoint
+│   │   └── auth/               # Auth endpoints
+│   └── database/
+│       ├── schema.sql          # Full database schema
+│       └── users.sql           # Users table
+├── index.html                  # Landing page
+├── login.html                  # Login page
+├── register.html               # Registration page  
+├── dashboard.html              # User dashboard
+├── reset-password.html         # Password reset
+├── setup.php                   # Auto database setup
+└── .htaccess                   # Apache configuration
+```
+
+## API Endpoints
+
+### Authentication
+- `POST /backend/api/login.php` - User login
+- `POST /backend/api/register.php` - User registration
+- `POST /backend/api/auth/forgot-password.php` - Password reset request
+- `POST /backend/api/auth/reset-password.php` - Password reset confirmation
+
+### Request/Response Format
+```json
+// Login Request
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
+
+// Login Response
+{
+  "status": "success", 
+  "message": "Login successful",
+  "user": {
+    "id": 1,
+    "username": "john_doe",
+    "email": "user@example.com"
+  }
+}
+
+// Registration Request
+{
+  "username": "john_doe",
+  "email": "user@example.com", 
+  "password": "password123"
+}
+
+// Registration Response
+{
+  "status": "success",
+  "message": "Registration successful"
+}
+```
+
+## Database Schema
+
+### Users Table
+```sql
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+## Security Features
+
+- ✅ Password hashing with `password_hash()`
+- ✅ SQL injection prevention with PDO prepared statements
+- ✅ CORS headers for secure API access
+- ✅ Input validation and sanitization
+- ✅ Secure session management
+- ✅ XSS protection headers
+
+## Testing
+
+### Registration Test
+1. Go to `http://localhost/project/register.html`
+2. Fill in the registration form with valid data
+3. Submit and verify account creation
+4. Check for success message and auto-redirect
+
+### Login Test  
+1. Go to `http://localhost/project/login.html`
+2. Use registered credentials
+3. Verify successful login and redirect to dashboard
+4. Check browser localStorage for user data
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Database Connection Error**
+   - Ensure MySQL is running in XAMPP
+   - Run `setup.php` to create database automatically
+   - Check database credentials in `backend/api/config.php`
+
+2. **API Not Working**
+   - Verify Apache is running
+   - Check `.htaccess` file exists
+   - Ensure proper file permissions
+
+3. **Images Not Loading**
+   - Verify `assets/images/` directory exists
+   - Check SVG files are present
+   - Ensure proper relative paths
+
+4. **Login/Registration Fails**
+   - Check browser console for JavaScript errors
+   - Verify database table exists
+   - Test API endpoints directly
+
+## Browser Support
+
+- Chrome 80+
+- Firefox 75+
+- Safari 13+
+- Edge 80+
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Contributing
+
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.

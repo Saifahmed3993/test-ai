@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Quiz - Career Guidance</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 600;
+            color: white !important;
+        }
+        
+        .nav-link {
+            color: rgba(255,255,255,0.9) !important;
+            font-weight: 500;
+        }
+        
+        .nav-link:hover {
+            color: white !important;
+        }
+        
+        .main-content {
+            padding: 30px 0;
+        }
+        
+        .quiz-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid #e5e7eb;
+        }
+        
+        .progress-container {
+            margin-bottom: 30px;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            border-radius: 4px;
+            background: #e5e7eb;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #8B5CF6, #3B82F6);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .question-card {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 2px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+        
+        .question-card.active {
+            border-color: #8B5CF6;
+            box-shadow: 0 5px 20px rgba(139, 92, 246, 0.1);
+        }
+        
+        .question-number {
+            background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .options-container {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .option-btn {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: left;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .option-btn:hover {
+            border-color: #8B5CF6;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.1);
+        }
+        
+        .option-btn.selected {
+            border-color: #8B5CF6;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+        }
+        
+        .option-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(135deg, #8B5CF6, #3B82F6);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .option-btn.selected::before {
+            transform: scaleY(1);
+        }
+        
+        .option-text {
+            font-weight: 500;
+            color: #374151;
+            margin-left: 15px;
+        }
+        
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .btn-nav {
+            background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            padding: 12px 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-nav:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
+            color: white;
+        }
+        
+        .btn-nav:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .result-card {
+            background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .result-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        
+        .career-suggestions {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .career-item {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #8B5CF6;
+        }
+        
+        .career-title {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 5px;
+        }
+        
+        .career-description {
+            color: #6b7280;
+            font-size: 14px;
+        }
+        
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e5e7eb;
+            border-top: 4px solid #8B5CF6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="dashboard.html">
+                <i class="fas fa-brain me-2"></i>
+                Career Guidance
+            </a>
+            
+            <div class="navbar-nav ms-auto">
+                <a href="dashboard.html" class="nav-link">
+                    <i class="fas fa-home me-1"></i>
+                    Dashboard
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container main-content">
+        <div class="quiz-container">
+            <!-- Progress Bar -->
+            <div class="progress-container">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="text-muted">Question <span id="currentQuestion">1</span> of <span id="totalQuestions">10</span></span>
+                    <span class="text-muted"><span id="progressPercent">10</span>% Complete</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar" style="width: 10%"></div>
+                </div>
+            </div>
+
+            <!-- Quiz Content -->
+            <div id="quizContent">
+                <!-- Questions will be loaded here -->
+            </div>
+
+            <!-- Loading Spinner -->
+            <div class="loading-spinner" id="loadingSpinner">
+                <div class="spinner"></div>
+                <p>Analyzing your responses...</p>
+            </div>
+
+            <!-- Results -->
+            <div id="resultsSection" style="display: none;">
+                <div class="result-card">
+                    <div class="result-icon">🎯</div>
+                    <h2>Quiz Complete!</h2>
+                    <p>Based on your responses, here are your career recommendations:</p>
+                </div>
+                
+                <div class="career-suggestions">
+                    <h4 class="mb-4">Recommended Career Paths</h4>
+                    <div id="careerList">
+                        <!-- Career suggestions will be loaded here -->
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <a href="dashboard.html" class="btn btn-primary me-3">
+                        <i class="fas fa-home me-1"></i>
+                        Back to Dashboard
+                    </a>
+                    <a href="roadmap.html" class="btn btn-outline-primary">
+                        <i class="fas fa-route me-1"></i>
+                        View Learning Roadmap
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Quiz questions
+        const quizQuestions = [
+            {
+                id: 1,
+                question: "How do you prefer to spend your free time?",
+                options: [
+                    { text: "Reading books and learning new things", category: "analytical" },
+                    { text: "Creating art, music, or writing", category: "creative" },
+                    { text: "Helping others and solving problems", category: "social" },
+                    { text: "Building or fixing things", category: "practical" }
+                ]
+            },
+            {
+                id: 2,
+                question: "What type of work environment do you prefer?",
+                options: [
+                    { text: "Quiet office with minimal distractions", category: "analytical" },
+                    { text: "Flexible, creative space", category: "creative" },
+                    { text: "Team-oriented, collaborative environment", category: "social" },
+                    { text: "Hands-on, workshop or field setting", category: "practical" }
+                ]
+            },
+            {
+                id: 3,
+                question: "How do you approach problem-solving?",
+                options: [
+                    { text: "Analyze data and research thoroughly", category: "analytical" },
+                    { text: "Think outside the box with innovative solutions", category: "creative" },
+                    { text: "Collaborate with others to find solutions", category: "social" },
+                    { text: "Use practical, hands-on methods", category: "practical" }
+                ]
+            },
+            {
+                id: 4,
+                question: "What motivates you most in a job?",
+                options: [
+                    { text: "Intellectual challenges and complex problems", category: "analytical" },
+                    { text: "Creative expression and innovation", category: "creative" },
+                    { text: "Making a positive impact on others", category: "social" },
+                    { text: "Tangible results and practical achievements", category: "practical" }
+                ]
+            },
+            {
+                id: 5,
+                question: "How do you prefer to communicate?",
+                options: [
+                    { text: "Through detailed reports and analysis", category: "analytical" },
+                    { text: "Through stories and creative presentations", category: "creative" },
+                    { text: "Through direct conversation and collaboration", category: "social" },
+                    { text: "Through demonstrations and hands-on examples", category: "practical" }
+                ]
+            },
+            {
+                id: 6,
+                question: "What type of projects do you enjoy most?",
+                options: [
+                    { text: "Research and data analysis", category: "analytical" },
+                    { text: "Design and creative development", category: "creative" },
+                    { text: "Team projects and community initiatives", category: "social" },
+                    { text: "Building and construction projects", category: "practical" }
+                ]
+            },
+            {
+                id: 7,
+                question: "How do you handle stress and pressure?",
+                options: [
+                    { text: "By organizing and planning systematically", category: "analytical" },
+                    { text: "By finding creative outlets and solutions", category: "creative" },
+                    { text: "By seeking support from colleagues and friends", category: "social" },
+                    { text: "By focusing on practical, immediate tasks", category: "practical" }
+                ]
+            },
+            {
+                id: 8,
+                question: "What skills do you consider your strongest?",
+                options: [
+                    { text: "Critical thinking and analysis", category: "analytical" },
+                    { text: "Creativity and imagination", category: "creative" },
+                    { text: "Communication and empathy", category: "social" },
+                    { text: "Technical and hands-on skills", category: "practical" }
+                ]
+            },
+            {
+                id: 9,
+                question: "What type of learning do you prefer?",
+                options: [
+                    { text: "Theoretical and academic learning", category: "analytical" },
+                    { text: "Experimental and creative learning", category: "creative" },
+                    { text: "Interactive and collaborative learning", category: "social" },
+                    { text: "Practical and hands-on learning", category: "practical" }
+                ]
+            },
+            {
+                id: 10,
+                question: "What is your ideal work schedule?",
+                options: [
+                    { text: "Structured hours with focused work periods", category: "analytical" },
+                    { text: "Flexible hours with creative freedom", category: "creative" },
+                    { text: "Regular hours with team interaction", category: "social" },
+                    { text: "Variable hours based on project needs", category: "practical" }
+                ]
+            }
+        ];
+
+        // Career recommendations based on categories
+        const careerRecommendations = {
+            analytical: [
+                { title: "Data Scientist", description: "Analyze complex data to help organizations make informed decisions" },
+                { title: "Financial Analyst", description: "Evaluate financial data and provide investment guidance" },
+                { title: "Research Scientist", description: "Conduct research to advance knowledge in various fields" },
+                { title: "Software Engineer", description: "Design and develop software solutions for complex problems" }
+            ],
+            creative: [
+                { title: "Graphic Designer", description: "Create visual content for brands and organizations" },
+                { title: "Content Creator", description: "Develop engaging content for digital platforms" },
+                { title: "UX/UI Designer", description: "Design user experiences and interfaces for digital products" },
+                { title: "Marketing Specialist", description: "Create and execute creative marketing campaigns" }
+            ],
+            social: [
+                { title: "Human Resources Manager", description: "Manage employee relations and organizational culture" },
+                { title: "Teacher/Educator", description: "Help others learn and develop their skills" },
+                { title: "Social Worker", description: "Support individuals and communities in need" },
+                { title: "Sales Representative", description: "Build relationships and help customers find solutions" }
+            ],
+            practical: [
+                { title: "Project Manager", description: "Oversee projects from planning to completion" },
+                { title: "Construction Manager", description: "Manage building and construction projects" },
+                { title: "Mechanical Engineer", description: "Design and build mechanical systems and products" },
+                { title: "Chef", description: "Create culinary experiences and manage kitchen operations" }
+            ]
+        };
+
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let selectedOption = null;
+
+        // Initialize quiz
+        function initQuiz() {
+            document.getElementById('totalQuestions').textContent = quizQuestions.length;
+            showQuestion();
+        }
+
+        // Show current question
+        function showQuestion() {
+            const question = quizQuestions[currentQuestionIndex];
+            const quizContent = document.getElementById('quizContent');
+            
+            quizContent.innerHTML = `
+                <div class="question-card active">
+                    <div class="question-number">${question.id}</div>
+                    <div class="question-text">${question.question}</div>
+                    <div class="options-container">
+                        ${question.options.map((option, index) => `
+                            <button class="option-btn" onclick="selectOption(${index})">
+                                <span class="option-text">${option.text}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+                
+                <div class="navigation-buttons">
+                    <button class="btn-nav" onclick="previousQuestion()" ${currentQuestionIndex === 0 ? 'disabled' : ''}>
+                        <i class="fas fa-arrow-left me-1"></i>
+                        Previous
+                    </button>
+                    <button class="btn-nav" onclick="nextQuestion()" ${!selectedOption ? 'disabled' : ''}>
+                        ${currentQuestionIndex === quizQuestions.length - 1 ? 'Finish Quiz' : 'Next'}
+                        <i class="fas fa-arrow-right ms-1"></i>
+                    </button>
+                </div>
+            `;
+            
+            updateProgress();
+        }
+
+        // Select an option
+        function selectOption(optionIndex) {
+            // Remove previous selection
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach(btn => btn.classList.remove('selected'));
+            
+            // Select new option
+            buttons[optionIndex].classList.add('selected');
+            selectedOption = optionIndex;
+            
+            // Enable next button
+            const nextBtn = document.querySelector('.navigation-buttons .btn-nav:last-child');
+            nextBtn.disabled = false;
+        }
+
+        // Next question
+        function nextQuestion() {
+            if (selectedOption !== null) {
+                // Save answer
+                userAnswers[currentQuestionIndex] = selectedOption;
+                
+                if (currentQuestionIndex === quizQuestions.length - 1) {
+                    // Quiz completed
+                    showResults();
+                } else {
+                    // Move to next question
+                    currentQuestionIndex++;
+                    selectedOption = null;
+                    showQuestion();
+                }
+            }
+        }
+
+        // Previous question
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                selectedOption = userAnswers[currentQuestionIndex] || null;
+                showQuestion();
+                
+                // Restore previous selection
+                if (selectedOption !== null) {
+                    const buttons = document.querySelectorAll('.option-btn');
+                    buttons[selectedOption].classList.add('selected');
+                }
+            }
+        }
+
+        // Update progress
+        function updateProgress() {
+            const progress = ((currentQuestionIndex + 1) / quizQuestions.length) * 100;
+            document.getElementById('currentQuestion').textContent = currentQuestionIndex + 1;
+            document.getElementById('progressPercent').textContent = Math.round(progress);
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        // Show results
+        function showResults() {
+            document.getElementById('quizContent').style.display = 'none';
+            document.getElementById('loadingSpinner').style.display = 'block';
+            
+            // Simulate analysis time
+            setTimeout(() => {
+                document.getElementById('loadingSpinner').style.display = 'none';
+                document.getElementById('resultsSection').style.display = 'block';
+                
+                // Calculate results
+                const results = calculateResults();
+                displayCareerRecommendations(results);
+                
+                // Update user progress
+                updateUserProgress();
+            }, 2000);
+        }
+
+        // Calculate results
+        function calculateResults() {
+            const categoryScores = {
+                analytical: 0,
+                creative: 0,
+                social: 0,
+                practical: 0
+            };
+            
+            userAnswers.forEach((answer, index) => {
+                const question = quizQuestions[index];
+                const selectedCategory = question.options[answer].category;
+                categoryScores[selectedCategory]++;
+            });
+            
+            // Find dominant category
+            const dominantCategory = Object.keys(categoryScores).reduce((a, b) => 
+                categoryScores[a] > categoryScores[b] ? a : b
+            );
+            
+            return {
+                dominantCategory,
+                categoryScores,
+                recommendations: careerRecommendations[dominantCategory]
+            };
+        }
+
+        // Display career recommendations
+        function displayCareerRecommendations(results) {
+            const careerList = document.getElementById('careerList');
+            careerList.innerHTML = results.recommendations.map(career => `
+                <div class="career-item">
+                    <div class="career-title">${career.title}</div>
+                    <div class="career-description">${career.description}</div>
+                </div>
+            `).join('');
+        }
+
+        // Update user progress
+        function updateUserProgress() {
+            const userProgress = JSON.parse(localStorage.getItem('userProgress') || '{}');
+            userProgress.quizCount = (userProgress.quizCount || 0) + 1;
+            
+            // Add activity
+            if (!userProgress.lastActivity) userProgress.lastActivity = [];
+            userProgress.lastActivity.unshift({
+                type: 'quiz',
+                text: 'Completed Career Assessment Quiz',
+                time: 'Just now',
+                icon: 'fas fa-question-circle',
+                color: '#10B981'
+            });
+            
+            // Keep only last 5 activities
+            userProgress.lastActivity = userProgress.lastActivity.slice(0, 5);
+            
+            localStorage.setItem('userProgress', JSON.stringify(userProgress));
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initQuiz();
+        });
+    </script>
+</body>
+</html>

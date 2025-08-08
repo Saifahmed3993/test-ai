@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Assistant - Career Guidance</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 600;
+            color: white !important;
+        }
+        
+        .nav-link {
+            color: rgba(255,255,255,0.9) !important;
+            font-weight: 500;
+        }
+        
+        .nav-link:hover {
+            color: white !important;
+        }
+        
+        .chat-container {
+            height: calc(100vh - 80px);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-header {
+            background: white;
+            padding: 20px;
+            border-bottom: 1px solid #e5e7eb;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .chat-header h2 {
+            margin: 0;
+            color: #1f2937;
+            font-weight: 600;
+        }
+        
+        .chat-header p {
+            margin: 5px 0 0 0;
+            color: #6b7280;
+            font-size: 14px;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: #f8fafc;
+        }
+        
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .message.user {
+            justify-content: flex-end;
+        }
+        
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: white;
+            margin-right: 12px;
+        }
+        
+        .message.user .message-avatar {
+            margin-right: 0;
+            margin-left: 12px;
+            background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
+        }
+        
+        .message.assistant .message-avatar {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+        }
+        
+        .message-content {
+            max-width: 70%;
+            padding: 15px 20px;
+            border-radius: 20px;
+            position: relative;
+            word-wrap: break-word;
+        }
+        
+        .message.user .message-content {
+            background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .message.assistant .message-content {
+            background: white;
+            color: #1f2937;
+            border: 1px solid #e5e7eb;
+            border-bottom-left-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .message-time {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-top: 5px;
+        }
+        
+        .message.user .message-time {
+            text-align: right;
+        }
+        
+        .typing-indicator {
+            display: none;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #9ca3af;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+        
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        
+        @keyframes typing {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+        
+        .chat-input {
+            background: white;
+            padding: 20px;
+            border-top: 1px solid #e5e7eb;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .input-container {
+            display: flex;
+            gap: 15px;
+            align-items: flex-end;
+        }
+        
+        .message-input {
+            flex: 1;
+            border: 2px solid #e5e7eb;
+            border-radius: 25px;
+            padding: 15px 20px;
+            font-size: 14px;
+            resize: none;
+            max-height: 120px;
+            transition: all 0.3s ease;
+        }
+        
+        .message-input:focus {
+            outline: none;
+            border-color: #8B5CF6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+        
+        .send-btn {
+            background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .send-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
+        }
+        
+        .send-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .quick-replies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .quick-reply {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 14px;
+            color: #374151;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .quick-reply:hover {
+            border-color: #8B5CF6;
+            color: #8B5CF6;
+            transform: translateY(-1px);
+        }
+        
+        .suggestions {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border: 1px solid #e5e7eb;
+        }
+        
+        .suggestion-title {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 15px;
+        }
+        
+        .suggestion-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .suggestion-card {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid #e5e7eb;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .suggestion-card:hover {
+            background: white;
+            border-color: #8B5CF6;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.1);
+        }
+        
+        .suggestion-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        .suggestion-icon.career {
+            background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+        }
+        
+        .suggestion-icon.skills {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+        }
+        
+        .suggestion-icon.interview {
+            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+        }
+        
+        .suggestion-icon.resume {
+            background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+        }
+        
+        .suggestion-title-card {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 5px;
+        }
+        
+        .suggestion-description {
+            color: #6b7280;
+            font-size: 12px;
+        }
+        
+        .chat-stats {
+            background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .stats-row {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="dashboard.html">
+                <i class="fas fa-brain me-2"></i>
+                Career Guidance
+            </a>
+            
+            <div class="navbar-nav ms-auto">
+                <a href="dashboard.html" class="nav-link">
+                    <i class="fas fa-home me-1"></i>
+                    Dashboard
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Chat Container -->
+    <div class="container-fluid chat-container">
+        <div class="chat-header">
+            <h2><i class="fas fa-robot me-2"></i>AI Career Assistant</h2>
+            <p>Ask me anything about your career, skills, or job search!</p>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+            <!-- Welcome message -->
+            <div class="message assistant">
+                <div class="message-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="message-content">
+                    <div>Hello! I'm your AI Career Assistant. I'm here to help you with:</div>
+                    <ul style="margin: 10px 0; padding-left: 20px;">
+                        <li>Career advice and guidance</li>
+                        <li>Skill development recommendations</li>
+                        <li>Interview preparation tips</li>
+                        <li>Resume and portfolio feedback</li>
+                        <li>Job search strategies</li>
+                    </ul>
+                    <div>What would you like to discuss today?</div>
+                    <div class="message-time">Just now</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Typing indicator -->
+        <div class="typing-indicator" id="typingIndicator">
+            <div class="message-avatar">
+                <i class="fas fa-robot"></i>
+            </div>
+            <div class="typing-dots">
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            </div>
+        </div>
+
+        <!-- Suggestions -->
+        <div class="suggestions" id="suggestions">
+            <div class="suggestion-title">Quick Start Topics</div>
+            <div class="suggestion-grid">
+                <div class="suggestion-card" onclick="sendQuickMessage('How can I improve my resume?')">
+                    <div class="suggestion-icon resume">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="suggestion-title-card">Resume Tips</div>
+                    <div class="suggestion-description">Get advice on creating a standout resume</div>
+                </div>
+                <div class="suggestion-card" onclick="sendQuickMessage('What skills should I learn for web development?')">
+                    <div class="suggestion-icon skills">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <div class="suggestion-title-card">Skill Development</div>
+                    <div class="suggestion-description">Discover in-demand skills for your field</div>
+                </div>
+                <div class="suggestion-card" onclick="sendQuickMessage('How should I prepare for a job interview?')">
+                    <div class="suggestion-icon interview">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <div class="suggestion-title-card">Interview Prep</div>
+                    <div class="suggestion-description">Learn interview strategies and tips</div>
+                </div>
+                <div class="suggestion-card" onclick="sendQuickMessage('What career path should I choose?')">
+                    <div class="suggestion-icon career">
+                        <i class="fas fa-route"></i>
+                    </div>
+                    <div class="suggestion-title-card">Career Guidance</div>
+                    <div class="suggestion-description">Explore different career options</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Stats -->
+        <div class="chat-stats" id="chatStats" style="display: none;">
+            <h5>Chat Session Summary</h5>
+            <div class="stats-row">
+                <div class="stat-item">
+                    <div class="stat-number" id="messagesCount">0</div>
+                    <div class="stat-label">Messages</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="sessionTime">0</div>
+                    <div class="stat-label">Minutes</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="topicsCovered">0</div>
+                    <div class="stat-label">Topics</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Input -->
+        <div class="chat-input">
+            <div class="quick-replies" id="quickReplies">
+                <div class="quick-reply" onclick="sendQuickMessage('Tell me about career opportunities in tech')">Tech Careers</div>
+                <div class="quick-reply" onclick="sendQuickMessage('How do I switch careers?')">Career Switch</div>
+                <div class="quick-reply" onclick="sendQuickMessage('What are the best remote jobs?')">Remote Jobs</div>
+                <div class="quick-reply" onclick="sendQuickMessage('How to network effectively?')">Networking</div>
+            </div>
+            
+            <div class="input-container">
+                <textarea 
+                    class="message-input" 
+                    id="messageInput" 
+                    placeholder="Type your message here..."
+                    rows="1"
+                ></textarea>
+                <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let messages = [];
+        let sessionStartTime = Date.now();
+        let topicsCovered = new Set();
+
+        // AI responses database
+        const aiResponses = {
+            'resume': [
+                "Hey! Let me help you make your resume stand out! 🎯\n\nHere are some game-changing tips:\n\n1. **Start with action verbs** - Instead of 'Responsible for...' try 'Developed', 'Implemented', 'Led'\n2. **Add numbers** - 'Increased sales by 25%' sounds way better than just 'Increased sales'\n3. **Tailor it** - Customize keywords for each job you apply to\n4. **Keep it clean** - 1-2 pages max, no fancy fonts\n5. **Double-check everything** - Typos can kill your chances!\n\nWant me to help you review a specific section? I'm pretty good at spotting what needs improvement! 😊",
+                "Oh, resume writing can be tricky! Here's what I've learned from helping tons of people:\n\nYour resume should tell your story in a way that makes hiring managers want to meet you. Think of it as your personal marketing document!\n\n**Pro tip:** Use a modern, clean template and make sure your contact info is up-to-date. A compelling summary statement that captures your professional value proposition is key.\n\nWhat part of your resume are you most concerned about? I'd love to help you polish it up! ✨"
+            ],
+            'skills': [
+                "Great question! Let's talk about skills that actually matter in today's job market! 🚀\n\n**For web development, focus on:**\n- HTML5, CSS3, JavaScript (the basics are everything!)\n- React, Vue.js, or Angular (pick one and master it)\n- Responsive design (mobile-first is the way to go)\n\n**Backend skills:**\n- Node.js, Python, or PHP (start with one)\n- Database management (SQL is still king)\n- API development (everyone needs APIs)\n\n**Tools you'll need:**\n- Git (version control is non-negotiable)\n- VS Code or similar IDE\n- Browser dev tools\n\nStart with the fundamentals and build up gradually! What specific area interests you most? I can give you a more detailed roadmap! 📚",
+                "Skills development is such an exciting journey! Here's what I've seen work really well:\n\nThe most in-demand skills vary by field, but generally include:\n\n- **Technical Skills:** Programming, data analysis, cloud computing\n- **Soft Skills:** Communication, problem-solving, teamwork\n- **Industry Knowledge:** Stay updated with latest trends\n\nConsider taking online courses or working on personal projects to build your portfolio. What specific field are you interested in? I'd love to help you create a learning plan! 🎯"
+            ],
+            'interview': [
+                "Interview prep can be nerve-wracking, but you've got this! 💪\n\nHere's my comprehensive guide:\n\n**Before the Interview:**\n- Research the company thoroughly (stalk them on LinkedIn!)\n- Prepare STAR method answers (Situation, Task, Action, Result)\n- Practice common questions (out loud, trust me!)\n- Plan your outfit and route (arrive 10 minutes early)\n\n**During the Interview:**\n- Maintain good eye contact (but don't stare!)\n- Ask thoughtful questions (show you're interested)\n- Show enthusiasm and confidence (fake it till you make it!)\n- Provide specific examples (stories are memorable)\n\n**After the Interview:**\n- Send a thank-you email (within 24 hours)\n- Follow up appropriately (don't be pushy)\n- Reflect on what went well\n\nWant to practice some common interview questions? I'm here to help! 🎤",
+                "Interview success is all about preparation and confidence! Here's what I've learned:\n\nPractice your responses to common questions like 'Tell me about yourself' and 'Why do you want this job?' Remember to use the STAR method (Situation, Task, Action, Result) when describing your experiences.\n\nThe key is to be authentic while showing your best self. What type of role are you interviewing for? I can help you prepare specific answers! 🎯"
+            ],
+            'career': [
+                "Choosing a career path is such a big decision! Let's break it down together! 🤔\n\n**First, let's do some self-reflection:**\n- What are you actually passionate about? (not just what pays well)\n- What are your natural strengths? (we all have them!)\n- What work environment do you thrive in? (office, remote, hybrid?)\n\n**Then do your research:**\n- Explore different industries (there are so many options!)\n- Look at job growth projections (future-proof your career)\n- Consider salary expectations (be realistic but optimistic)\n\n**Practical steps:**\n- Take career assessment tests (they can be surprisingly helpful!)\n- Network with professionals (LinkedIn is your friend)\n- Gain relevant experience (internships, volunteering, side projects)\n\nWhat specific career areas interest you? I can provide more targeted advice! 🎯",
+                "Career paths are rarely straight lines! Many people change careers multiple times throughout their lives, and that's totally normal!\n\nFocus on transferable skills and continuous learning. Consider starting with internships or entry-level positions to gain experience in your desired field.\n\nWhat's drawing you to a particular career? I'd love to help you explore your options! 🌟"
+            ],
+            'tech': [
+                "The tech industry is absolutely booming right now! 🚀\n\nHere are some exciting career opportunities:\n\n**Software Development:**\n- Frontend/Backend Developer (full-stack is in high demand!)\n- Mobile App Developer (iOS/Android)\n- DevOps Engineer (bridging development and operations)\n\n**Data & Analytics:**\n- Data Scientist (the sexiest job of the 21st century!)\n- Business Analyst (translating data into insights)\n- Data Engineer (building data pipelines)\n\n**Design & UX:**\n- UI/UX Designer (making things beautiful and functional)\n- Product Designer (thinking about the whole user experience)\n- Graphic Designer (creative and technical)\n\n**Management:**\n- Product Manager (the CEO of the product)\n- Engineering Manager (leading technical teams)\n- Project Manager (keeping everything on track)\n\nWhat specific tech role catches your eye? I can provide more detailed information! 💻",
+                "Tech careers are known for good salaries, remote work opportunities, and continuous learning. The field is constantly evolving, so staying updated with new technologies and trends is crucial for long-term success.\n\nWhat interests you most about tech? I'd love to help you explore your options! 🎯"
+            ],
+            'remote': [
+                "Remote work is the future! Let's talk about the best opportunities! 🏠\n\n**High-Demand Remote Jobs:**\n- Software Developer (coding from anywhere!)\n- Digital Marketing Specialist (social media and SEO)\n- Content Writer (wordsmithing from your couch)\n- Virtual Assistant (organizing from home)\n- Data Analyst (crunching numbers remotely)\n- Customer Support (helping people from anywhere)\n\n**Tips for Remote Work Success:**\n- Set up a dedicated workspace (your bed is not your office!)\n- Maintain regular hours (work-life balance is key)\n- Use communication tools effectively (Slack, Zoom, etc.)\n- Stay connected with colleagues (virtual coffee chats!)\n\n**Finding Remote Jobs:**\n- Use job boards like Remote.co, WeWorkRemotely\n- Network online through LinkedIn\n- Look for companies with remote-first policies\n\nWant tips on setting up a home office or managing remote work? I'm here to help! 🎯",
+                "Remote work requires strong self-discipline and communication skills. Many companies now offer hybrid or fully remote positions, making it easier to find opportunities that fit your lifestyle.\n\nWhat type of remote work interests you? I can help you find the perfect fit! 🌟"
+            ],
+            'network': [
+                "Networking is everything in today's job market! Let's make it work for you! 🤝\n\n**Online Networking:**\n- LinkedIn profile optimization (make it shine!)\n- Join professional groups (be active, not just a lurker)\n- Participate in industry discussions (share your insights)\n- Share valuable content (position yourself as an expert)\n\n**In-Person Networking:**\n- Attend industry events and conferences (meet people face-to-face)\n- Join professional associations (get involved!)\n- Volunteer for relevant organizations (give back while building connections)\n- Informational interviews (learn from others' experiences)\n\n**Networking Tips:**\n- Be genuine and helpful (don't just take, give back!)\n- Follow up after meetings (the magic happens in follow-up)\n- Offer value before asking for favors (build relationships first)\n- Maintain relationships over time (networking is a marathon, not a sprint)\n\nStart by updating your LinkedIn profile and joining relevant professional groups! What industry are you looking to network in? 🎯",
+                "Networking is about building genuine relationships, not just collecting contacts. Focus on how you can help others, and the opportunities will follow naturally.\n\nWhat's your networking strategy? I'd love to help you develop one! 🌟"
+            ],
+            'switch': [
+                "Career switching is more common than ever! Let's make your transition smooth! 🔄\n\n**Assessment Phase:**\n- Identify transferable skills (you have more than you think!)\n- Research target industries (knowledge is power)\n- Evaluate financial implications (be realistic about salary changes)\n- Consider education requirements (certifications can help)\n\n**Preparation Phase:**\n- Gain relevant experience (volunteer, freelance, side projects)\n- Update skills through courses/certifications (show you're serious)\n- Network in your target field (meet people who can help)\n- Build a portfolio (showcase your new skills)\n\n**Transition Phase:**\n- Start with entry-level positions (be patient with the process)\n- Be patient with the process (transitions take time)\n- Leverage your existing network (your current connections can help)\n- Consider part-time or contract work (ease into the new field)\n\nWhat field are you considering switching to? I can provide more specific guidance! 🎯",
+                "Career switching requires careful planning and patience. Many skills are transferable across industries, so focus on highlighting relevant experience and being open to starting at a more junior level in your new field.\n\nWhat's motivating your career change? I'd love to help you plan your transition! 🌟"
+            ]
+        };
+
+        // Initialize chat
+        document.addEventListener('DOMContentLoaded', function() {
+            setupChat();
+            updateChatStats();
+        });
+
+        // Setup chat functionality
+        function setupChat() {
+            const messageInput = document.getElementById('messageInput');
+            const sendBtn = document.getElementById('sendBtn');
+
+            // Auto-resize textarea
+            messageInput.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+            });
+
+            // Send message on Enter (but allow Shift+Enter for new line)
+            messageInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+
+            // Enable/disable send button based on input
+            messageInput.addEventListener('input', function() {
+                sendBtn.disabled = this.value.trim() === '';
+            });
+        }
+
+        // Send message
+        async function sendMessage() {
+            const messageInput = document.getElementById('messageInput');
+            const message = messageInput.value.trim();
+            
+            if (message === '') return;
+
+            // Add user message
+            addMessage(message, 'user');
+            messageInput.value = '';
+            messageInput.style.height = 'auto';
+            document.getElementById('sendBtn').disabled = true;
+
+            // Show typing indicator
+            showTypingIndicator();
+
+            try {
+                // Send message to AI API
+                const response = await fetch('../../backend/api/chat.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: message
+                    })
+                });
+
+                const data = await response.json();
+
+                hideTypingIndicator();
+
+                if (data.status === 'success') {
+                    addMessage(data.message, 'assistant');
+                } else {
+                    // Fallback to mock response if API fails
+                    const fallbackResponse = generateFallbackResponse(message);
+                    addMessage(fallbackResponse, 'assistant');
+                }
+                
+                updateChatStats();
+            } catch (error) {
+                console.error('Error calling AI API:', error);
+                hideTypingIndicator();
+                
+                // Fallback to mock response
+                const fallbackResponse = generateFallbackResponse(message);
+                addMessage(fallbackResponse, 'assistant');
+                updateChatStats();
+            }
+        }
+
+        // Send quick message
+        function sendQuickMessage(message) {
+            const messageInput = document.getElementById('messageInput');
+            messageInput.value = message;
+            sendMessage();
+        }
+
+        // Add message to chat
+        function addMessage(content, sender) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            
+            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            messageDiv.innerHTML = `
+                <div class="message-avatar">
+                    <i class="fas fa-${sender === 'user' ? 'user' : 'robot'}"></i>
+                </div>
+                <div class="message-content">
+                    <div>${content}</div>
+                    <div class="message-time">${time}</div>
+                </div>
+            `;
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // Store message
+            messages.push({ content, sender, time: Date.now() });
+            
+            // Hide suggestions after first message
+            if (messages.length > 1) {
+                document.getElementById('suggestions').style.display = 'none';
+                document.getElementById('chatStats').style.display = 'block';
+            }
+        }
+
+        // Generate fallback response (when AI API is not available)
+        function generateFallbackResponse(userMessage) {
+            const message = userMessage.toLowerCase();
+            
+            // Check for personal information like names
+            if (message.includes('my name is') || message.includes('i am') || message.includes('i\'m')) {
+                const nameMatch = message.match(/(?:my name is|i am|i'm)\s+([a-zA-Z]+)/i);
+                if (nameMatch) {
+                    const name = nameMatch[1];
+                    // Store the name in localStorage for future use
+                    localStorage.setItem('userName', name);
+                    return `Hey ${name}! 👋 Nice to meet you! I'm your AI Career Assistant, and I'm super excited to help you on your career journey! 🚀\n\nI'm here to help you with career guidance, skill development, and job search advice. What would you like to know more about?\n\nYou can ask me about:\n• Specific career paths and requirements\n• Salary information and job prospects\n• Building portfolios and skills\n• Learning resources and courses\n• Job search strategies\n\nWhat's on your mind, ${name}? I'm here to help! ✨`;
+                }
+            }
+            
+            // Check if user has a stored name
+            const storedName = localStorage.getItem('userName');
+            const greeting = storedName ? `Hello ${storedName}! ` : 'Hello! ';
+            
+            // Identify topic and track it
+            let topic = 'general';
+            if (message.includes('resume') || message.includes('cv')) {
+                topic = 'resume';
+                topicsCovered.add('resume');
+            } else if (message.includes('skill') || message.includes('learn') || message.includes('development')) {
+                topic = 'skills';
+                topicsCovered.add('skills');
+            } else if (message.includes('interview') || message.includes('prepare')) {
+                topic = 'interview';
+                topicsCovered.add('interview');
+            } else if (message.includes('career') || message.includes('path') || message.includes('choose')) {
+                topic = 'career';
+                topicsCovered.add('career');
+            } else if (message.includes('tech') || message.includes('technology')) {
+                topic = 'tech';
+                topicsCovered.add('tech');
+            } else if (message.includes('remote') || message.includes('work from home')) {
+                topic = 'remote';
+                topicsCovered.add('remote');
+            } else if (message.includes('network') || message.includes('connect')) {
+                topic = 'network';
+                topicsCovered.add('network');
+            } else if (message.includes('switch') || message.includes('change career')) {
+                topic = 'switch';
+                topicsCovered.add('switch');
+            }
+            
+            // Get response from database
+            const responses = aiResponses[topic] || [
+                greeting + "I'm here to help you with career guidance! 🎯\n\nYou can ask me about:\n• Specific career paths and requirements\n• Salary information and job prospects\n• Building portfolios and skills\n• Learning resources and courses\n• Job search strategies\n\nWhat would you like to know more about? I'm excited to help you on your career journey! ✨",
+                greeting + "I'm your AI Career Assistant, and I'm here to help you navigate your career path! 🚀\n\nWhether you're just starting out, looking to switch careers, or want to level up your skills, I've got your back! What's on your mind today?"
+            ];
+            
+            // Return random response from the topic
+            return responses[Math.floor(Math.random() * responses.length)];
+        }
+
+        // Show typing indicator
+        function showTypingIndicator() {
+            document.getElementById('typingIndicator').style.display = 'flex';
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Hide typing indicator
+        function hideTypingIndicator() {
+            document.getElementById('typingIndicator').style.display = 'none';
+        }
+
+        // Update chat statistics
+        function updateChatStats() {
+            const sessionTime = Math.floor((Date.now() - sessionStartTime) / 60000);
+            
+            document.getElementById('messagesCount').textContent = messages.length;
+            document.getElementById('sessionTime').textContent = sessionTime;
+            document.getElementById('topicsCovered').textContent = topicsCovered.size;
+            
+            // Update user progress
+            const userProgress = JSON.parse(localStorage.getItem('userProgress') || '{}');
+            userProgress.chatSessions = (userProgress.chatSessions || 0) + 1;
+            
+            // Add activity if this is a new session
+            if (messages.length === 2) { // User's first message
+                userProgress.lastActivity = userProgress.lastActivity || [];
+                userProgress.lastActivity.unshift({
+                    type: 'chat',
+                    text: 'Started a chat session with AI Assistant',
+                    time: 'Just now',
+                    icon: 'fas fa-comments',
+                    color: '#8B5CF6'
+                });
+                userProgress.lastActivity = userProgress.lastActivity.slice(0, 5);
+            }
+            
+            localStorage.setItem('userProgress', JSON.stringify(userProgress));
+        }
+    </script>
+</body>
+</html>
