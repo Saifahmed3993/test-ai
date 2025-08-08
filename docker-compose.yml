@@ -1,0 +1,11 @@
+$dsn = "mysql:host=db;dbname=mydb;charset=utf8";
+$username = "user";
+$password = "pass";
+
+try {
+    $pdo = new PDO($dsn, $username, $password, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+    ]);
+} catch (PDOException $e) {
+    die("Database connection failed: " . $e->getMessage());
+}
