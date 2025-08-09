@@ -1,26 +1,26 @@
 <?php
-// Database setup script
-// Run this file once to create the database and tables
+// Database setup script for Railway
 
-// Database configuration
-$host = 'localhost';
-$username = 'root';
-$password = '';
+// Database configuration from Railway environment variables
+$host = getenv('MYSQLHOST');
+$username = getenv('MYSQLUSER');
+$password = getenv('MYSQLPASSWORD');
+$dbName = getenv('MYSQLDATABASE');
 
 try {
-    // Connect to MySQL without selecting a database
-    $pdo = new PDO("mysql:host=$host", $username, $password);
+    // Connect to MySQL without selecting a database first
+    $pdo = new PDO("mysql:host=$host;port=3306", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
     echo "<h2>Career Guidance Database Setup</h2>";
     echo "<p>Setting up database...</p>";
     
     // Create database if it doesn't exist
-    $pdo->exec("CREATE DATABASE IF NOT EXISTS career_guidance CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
-    echo "<p>✓ Database 'career_guidance' created successfully</p>";
+    $pdo->exec("CREATE DATABASE IF NOT EXISTS `$dbName` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+    echo "<p>✓ Database '$dbName' created successfully</p>";
     
     // Select the database
-    $pdo->exec("USE career_guidance");
+    $pdo->exec("USE `$dbName`");
     
     // Create users table
     $sql = "CREATE TABLE IF NOT EXISTS users (
@@ -55,63 +55,5 @@ try {
 } catch(PDOException $e) {
     echo "<h2>Error</h2>";
     echo "<p>Database setup failed: " . $e->getMessage() . "</p>";
-    echo "<p>Please make sure:</p>";
-    echo "<ul>";
-    echo "<li>XAMPP is running</li>";
-    echo "<li>MySQL service is started</li>";
-    echo "<li>You have proper permissions</li>";
-    echo "</ul>";
+    echo "<p>Please make sure your Railway MySQL service is running and variables are set correctly.</p>";
 }
-?>
-
-<style>
-body {
-    font-family: 'Inter', sans-serif;
-    max-width: 800px;
-    margin: 50px auto;
-    padding: 20px;
-    background: #f8fafc;
-}
-
-h2 {
-    color: #8B5CF6;
-    border-bottom: 2px solid #8B5CF6;
-    padding-bottom: 10px;
-}
-
-p {
-    line-height: 1.6;
-    color: #374151;
-}
-
-ul {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-li {
-    margin-bottom: 10px;
-}
-
-a {
-    color: #8B5CF6;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-h3 {
-    color: #10B981;
-    margin-top: 30px;
-}
-
-h4 {
-    color: #3B82F6;
-    margin-top: 20px;
-}
-</style>
